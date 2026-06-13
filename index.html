@@ -267,11 +267,14 @@
     </div>
 
     <script>
+        // Limpiar localStorage al cargar la página
+        localStorage.removeItem('endTime');
+
         function updateTimer() {
             // Fecha y hora actual
             const now = new Date().getTime();
             
-            // Obtener o crear la hora de fin (1 minuto)
+            // Crear nueva hora de fin (1 minuto)
             let endTime = localStorage.getItem('endTime');
             if (!endTime) {
                 endTime = now + (1 * 60 * 1000); // 1 minuto
