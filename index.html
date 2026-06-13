@@ -1,140 +1,300 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Random 10</title>
-    <style>
-        /* --- ESTILOS --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            width: 100%; height: 100vh;
-            display: flex; justify-content: center; align-items: center;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            font-family: 'Arial', sans-serif;
-            overflow: hidden;
-        }
-        .container {
-            text-align: center; padding: 40px;
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 20px;
-            box-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
-            max-width: 600px; width: 90%;
-            border: 2px solid rgba(0, 255, 255, 0.3);
-        }
-        .title {
-            font-size: 4rem; font-weight: bold;
-            background: linear-gradient(45deg, #00ff88, #00ffff, #ff00ff);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
-            margin-bottom: 40px; letter-spacing: 3px;
-            animation: glow 2s ease-in-out infinite;
-        }
-        @keyframes glow {
-            0%,100% { text-shadow: 0 0 20px rgba(0,255,136,0.8); }
-            50% { text-shadow: 0 0 40px rgba(0,255,255,1); }
-        }
-        .timer { font-size: 3.5rem; font-weight: bold; color: #00ff88;
-            font-family: 'Courier New', monospace;
-            text-shadow: 0 0 20px rgba(0,255,136,0.8);
-            animation: pulse 1s ease-in-out infinite;
-        }
-        @keyframes pulse {
-            0%,100% { color:#00ff88; text-shadow:0 0 20px rgba(0,255,136,0.8); }
-            50% { color:#00ffff; text-shadow:0 0 40px rgba(0,255,255,1); }
-        }
-        .time-units { display:grid; grid-template-columns:repeat(4,1fr); gap:15px; margin-top:20px; }
-        .time-unit { background:rgba(0,255,136,0.1); border:2px solid rgba(0,255,136,0.5); border-radius:10px; padding:15px; }
-        .time-unit-value { font-size:2rem; font-weight:bold; color:#00ff88; font-family:'Courier New', monospace; }
-        .time-unit-label { font-size:0.8rem; color:#00ffff; margin-top:5px; text-transform:uppercase; }
-        .finished-container { display:none; animation:fadeIn 0.5s ease-in; }
-        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
-        .finished-message { font-size:3.5rem; font-weight:bold; color:#ff00ff;
-            text-shadow:0 0 30px rgba(255,0,255,0.8);
-            animation: finishGlow 1.5s ease-in-out infinite;
-        }
-        @keyframes finishGlow {
-            0%,100% { color:#ff00ff; text-shadow:0 0 20px rgba(255,0,255,0.8); }
-            50% { color:#ff0088; text-shadow:0 0 50px rgba(255,0,136,1); }
-        }
-        .play-button {
-            width:120px; height:120px; background:linear-gradient(135deg,#4169ff,#6495ff);
-            border:none; border-radius:50%; cursor:pointer;
-            display:flex; justify-content:center; align-items:center;
-            margin:0 auto; box-shadow:0 0 40px rgba(65,105,255,0.8), inset 0 0 30px rgba(255,255,255,0.3);
-            transition:all 0.3s ease; animation:buttonPulse 2s ease-in-out infinite;
-        }
-        @keyframes buttonPulse {
-            0%,100% { transform:scale(1); }
-            50% { transform:scale(1.1); }
-        }
-        .play-icon {
-            width:0; height:0; border-left:35px solid white;
-            border-top:25px solid transparent; border-bottom:25px solid transparent;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="title">GAME RANDOM 10</div>
-        
-        <div class="timer-container" id="timerContainer">
-            <div class="timer-label">⏱️ TIEMPO RESTANTE</div>
-            <div class="timer" id="mainTimer">20:00:00:00</div>
-            
-            <div class="time-units">
-                <div class="time-unit"><div class="time-unit-value" id="days">20</div><div class="time-unit-label">Días</div></div>
-                <div class="time-unit"><div class="time-unit-value" id="hours">00</div><div class="time-unit-label">Horas</div></div>
-                <div class="time-unit"><div class="time-unit-value" id="minutes">00</div><div class="time-unit-label">Minutos</div></div>
-                <div class="time-unit"><div class="time-unit-value" id="seconds">00</div><div class="time-unit-label">Segundos</div></div>
-            </div>
-        </div>
+body {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        font-family: 'Arial', sans-serif;
+        overflow: hidden;
+    }
 
-        <div class="finished-container" id="finishedContainer">
-            <div class="finished-message">YA LISTO EN ROBLOX</div>
-            <button class="play-button"><div class="play-icon"></div></button>
+    .container {
+        text-align: center;
+        padding: 40px;
+        background: rgba(0, 0, 0, 0.6);
+        border-radius: 20px;
+        box-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
+        max-width: 600px;
+        width: 90%;
+        border: 2px solid rgba(0, 255, 255, 0.3);
+    }
+
+    .title {
+        font-size: 4rem;
+        font-weight: bold;
+        background: linear-gradient(45deg, #00ff88, #00ffff, #ff00ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+        margin-bottom: 40px;
+        font-family: 'Arial Black', sans-serif;
+        letter-spacing: 3px;
+        animation: glow 2s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+        0%, 100% {
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.8);
+        }
+        50% {
+            text-shadow: 0 0 40px rgba(0, 255, 255, 1);
+        }
+    }
+
+    .timer-container {
+        margin: 30px 0;
+    }
+
+    .timer {
+        font-size: 3.5rem;
+        font-weight: bold;
+        color: #00ff88;
+        font-family: 'Courier New', monospace;
+        text-shadow: 0 0 20px rgba(0, 255, 136, 0.8);
+        letter-spacing: 2px;
+        margin: 20px 0;
+        animation: pulse 1s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            color: #00ff88;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.8);
+        }
+        50% {
+            color: #00ffff;
+            text-shadow: 0 0 40px rgba(0, 255, 255, 1);
+        }
+    }
+
+    .timer-label {
+        color: #00ffff;
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        letter-spacing: 2px;
+    }
+
+    .time-units {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .time-unit {
+        background: rgba(0, 255, 136, 0.1);
+        border: 2px solid rgba(0, 255, 136, 0.5);
+        border-radius: 10px;
+        padding: 15px;
+        border-radius: 10px;
+    }
+
+    .time-unit-value {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #00ff88;
+        font-family: 'Courier New', monospace;
+    }
+
+    .time-unit-label {
+        font-size: 0.8rem;
+        color: #00ffff;
+        margin-top: 5px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .finished-container {
+        display: none;
+        animation: fadeIn 0.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    .finished-message {
+        font-size: 3.5rem;
+        font-weight: bold;
+        color: #ff00ff;
+        text-shadow: 0 0 30px rgba(255, 0, 255, 0.8);
+        animation: finishGlow 1.5s ease-in-out infinite;
+        font-family: 'Arial Black', sans-serif;
+        letter-spacing: 2px;
+        margin-bottom: 40px;
+    }
+
+    @keyframes finishGlow {
+        0%, 100% {
+            color: #ff00ff;
+            text-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
+        }
+        50% {
+            color: #ff0088;
+            text-shadow: 0 0 50px rgba(255, 0, 136, 1);
+        }
+    }
+
+    .play-button {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, #4169ff, #6495ff);
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+        box-shadow: 0 0 40px rgba(65, 105, 255, 0.8), inset 0 0 30px rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
+        animation: buttonPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes buttonPulse {
+        0%, 100% {
+            box-shadow: 0 0 40px rgba(65, 105, 255, 0.8), inset 0 0 30px rgba(255, 255, 255, 0.3);
+            transform: scale(1);
+        }
+        50% {
+            box-shadow: 0 0 80px rgba(65, 105, 255, 1), inset 0 0 40px rgba(255, 255, 255, 0.5);
+            transform: scale(1.1);
+        }
+    }
+
+    .play-button:hover {
+        box-shadow: 0 0 100px rgba(65, 105, 255, 1), inset 0 0 40px rgba(255, 255, 255, 0.5);
+        transform: scale(1.15);
+    }
+
+    .play-button:active {
+        transform: scale(1.05);
+    }
+
+    .play-icon {
+        width: 0;
+        height: 0;
+        border-left: 35px solid white;
+        border-top: 25px solid transparent;
+        border-bottom: 25px solid transparent;
+        margin-left: 8px;
+    }
+
+    @media (max-width: 768px) {
+        .title {
+            font-size: 2.5rem;
+        }
+
+        .timer {
+            font-size: 2.5rem;
+        }
+
+        .finished-message {
+            font-size: 2.5rem;
+        }
+
+        .play-button {
+            width: 100px;
+            height: 100px;
+        }
+
+        .play-icon {
+            border-left: 30px solid white;
+            border-top: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+        }
+
+        .time-units {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+</style>
+
+
+
+
+    <div class="timer-container" id="timerContainer">
+        <div class="timer-label">⏱️ TIEMPO RESTANTE</div>
+        <div class="timer" id="mainTimer">00:00:01:00</div>
+        
+        <div class="time-units">
+            <div class="time-unit">
+                <div class="time-unit-value" id="days">00</div>
+                <div class="time-unit-label">Días</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-unit-value" id="hours">00</div>
+                <div class="time-unit-label">Horas</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-unit-value" id="minutes">01</div>
+                <div class="time-unit-label">Minutos</div>
+            </div>
+            <div class="time-unit">
+                <div class="time-unit-value" id="seconds">00</div>
+                <div class="time-unit-label">Segundos</div>
+            </div>
         </div>
     </div>
 
-    <script>
-        // Limpiar localStorage al cargar la página
-        localStorage.removeItem('endTime');
+    <div class="finished-container" id="finishedContainer">
+        <div class="finished-message">YA LISTO EN ROBLOX</div>
+        <button class="play-button">
+            <div class="play-icon"></div>
+        </button>
+    </div>
+</div>
 
-        function updateTimer() {
-            const now = new Date().getTime();
-            
-            // Crear nueva hora de fin (20 días)
-            let endTime = localStorage.getItem('endTime');
-            if (!endTime) {
-                endTime = now + (20 * 24 * 60 * 60 * 1000); // 20 días
-                localStorage.setItem('endTime', endTime);
-            }
-            endTime = parseInt(endTime);
+<script>
+    // Limpiar localStorage al cargar la página
+    localStorage.removeItem('endTime');
 
-            const distance = endTime - now;
+    function updateTimer() {
+        // Fecha y hora actual
+        const now = new Date().getTime();
+        
+        // Crear nueva hora de fin (1 minuto)
+        let endTime = localStorage.getItem('endTime');
+        if (!endTime) {
+            endTime = now + (1 * 60 * 1000); // 1 minuto
+            localStorage.setItem('endTime', endTime);
+        }
+        endTime = parseInt(endTime);
 
-            if (distance <= 0) {
-                document.getElementById('timerContainer').style.display = 'none';
-                document.getElementById('finishedContainer').style.display = 'block';
-                return;
-            }
+        // Calcula la diferencia
+        const distance = endTime - now;
 
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById('days').innerText = String(days).padStart(2, '0');
-            document.getElementById('hours').innerText = String(hours).padStart(2, '0');
-            document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
-            document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
-            
-            document.getElementById('mainTimer').innerText = 
-                `${String(days).padStart(2, '0')}:${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        if (distance <= 0) {
+            // El temporizador ha terminado
+            document.getElementById('timerContainer').style.display = 'none';
+            document.getElementById('finishedContainer').style.display = 'block';
+            return;
         }
 
-        updateTimer();
-        setInterval(updateTimer, 1000);
-    </script>
-</body>
-</html>
+        // Calcula días, horas, minutos y segundos
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Actualiza los elementos
+        document.getElementById('days').innerText = String(days).padStart(2, '0');
+        document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+        document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+        document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+        
+        document.getElementById('mainTimer').innerText = 
+            `${String(days).padStart(2, '0')}:${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    // Actualiza el temporizador cada segundo
+    updateTimer();
+    setInterval(updateTimer, 1000);
+</script>
