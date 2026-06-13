@@ -119,8 +119,21 @@
             letter-spacing: 1px;
         }
 
-        .finished-message {
+        .finished-container {
             display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .finished-message {
             font-size: 3.5rem;
             font-weight: bold;
             color: #ff00ff;
@@ -128,6 +141,7 @@
             animation: finishGlow 1.5s ease-in-out infinite;
             font-family: 'Arial Black', sans-serif;
             letter-spacing: 2px;
+            margin-bottom: 40px;
         }
 
         @keyframes finishGlow {
@@ -139,6 +153,51 @@
                 color: #ff0088;
                 text-shadow: 0 0 50px rgba(255, 0, 136, 1);
             }
+        }
+
+        .play-button {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #4169ff, #6495ff);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+            box-shadow: 0 0 40px rgba(65, 105, 255, 0.8), inset 0 0 30px rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            animation: buttonPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% {
+                box-shadow: 0 0 40px rgba(65, 105, 255, 0.8), inset 0 0 30px rgba(255, 255, 255, 0.3);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 80px rgba(65, 105, 255, 1), inset 0 0 40px rgba(255, 255, 255, 0.5);
+                transform: scale(1.1);
+            }
+        }
+
+        .play-button:hover {
+            box-shadow: 0 0 100px rgba(65, 105, 255, 1), inset 0 0 40px rgba(255, 255, 255, 0.5);
+            transform: scale(1.15);
+        }
+
+        .play-button:active {
+            transform: scale(1.05);
+        }
+
+        .play-icon {
+            width: 0;
+            height: 0;
+            border-left: 35px solid white;
+            border-top: 25px solid transparent;
+            border-bottom: 25px solid transparent;
+            margin-left: 8px;
         }
 
         @media (max-width: 768px) {
@@ -154,6 +213,17 @@
                 font-size: 2.5rem;
             }
 
+            .play-button {
+                width: 100px;
+                height: 100px;
+            }
+
+            .play-icon {
+                border-left: 30px solid white;
+                border-top: 20px solid transparent;
+                border-bottom: 20px solid transparent;
+            }
+
             .time-units {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -164,13 +234,13 @@
     <div class="container">
         <div class="title">GAME RANDOM 10</div>
         
-        <div class="timer-container">
+        <div class="timer-container" id="timerContainer">
             <div class="timer-label">⏱️ TIEMPO RESTANTE</div>
-            <div class="timer" id="mainTimer">20:00:00:00</div>
+            <div class="timer" id="mainTimer">00:00:01:00</div>
             
             <div class="time-units">
                 <div class="time-unit">
-                    <div class="time-unit-value" id="days">20</div>
+                    <div class="time-unit-value" id="days">00</div>
                     <div class="time-unit-label">Días</div>
                 </div>
                 <div class="time-unit">
@@ -178,7 +248,7 @@
                     <div class="time-unit-label">Horas</div>
                 </div>
                 <div class="time-unit">
-                    <div class="time-unit-value" id="minutes">00</div>
+                    <div class="time-unit-value" id="minutes">01</div>
                     <div class="time-unit-label">Minutos</div>
                 </div>
                 <div class="time-unit">
@@ -188,7 +258,12 @@
             </div>
         </div>
 
-        <div class="finished-message" id="finishedMessage">YA LISTO EN ROBLOX</div>
+        <div class="finished-container" id="finishedContainer">
+            <div class="finished-message">YA LISTO EN ROBLOX</div>
+            <button class="play-button">
+                <div class="play-icon"></div>
+            </button>
+        </div>
     </div>
 
     <script>
@@ -196,11 +271,10 @@
             // Fecha y hora actual
             const now = new Date().getTime();
             
-            // Fecha y hora en 20 días desde que se carga la página
-            // Si quieres una fecha fija, cambia esto
+            // Obtener o crear la hora de fin (1 minuto)
             let endTime = localStorage.getItem('endTime');
             if (!endTime) {
-                endTime = now + (20 * 24 * 60 * 60 * 1000);
+                endTime = now + (1 * 60 * 1000); // 1 minuto
                 localStorage.setItem('endTime', endTime);
             }
             endTime = parseInt(endTime);
@@ -210,10 +284,8 @@
 
             if (distance <= 0) {
                 // El temporizador ha terminado
-                document.getElementById('mainTimer').style.display = 'none';
-                document.getElementById('days').parentElement.parentElement.style.display = 'none';
-                document.querySelector('.timer-label').style.display = 'none';
-                document.getElementById('finishedMessage').style.display = 'block';
+                document.getElementById('timerContainer').style.display = 'none';
+                document.getElementById('finishedContainer').style.display = 'block';
                 return;
             }
 
